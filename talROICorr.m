@@ -20,16 +20,16 @@ if any(ch_coloc == ROI_main_ch)
     
     if d1_flag && (size(data1ext,1) > 10 && size(data1ext,2) > 10)
         sq = strel('sphere', 5);
-        cond = itsty_lvl * max(mean(data1ext)); % lokalnie: mean(mean( data1( i-sq_dim(1):i+sq_dim(2) , j-sq_dim(3):j+sq_dim(4) ) )) ))); %find how many pixels in area meet the criterium of 1/4 mask being brighter than given intensity level
+        cond = itsty_lvl * max(mean(data1ext)); 
         if isempty(roi_matrix)
             roi_matrix = zeros(size(data1ext));
         end
 
-        for i = 1 : size(data1ext,1) %ROWS
-            for j = 1 : size(data1ext,2) %COLS
+        for i = 1 : size(data1ext,1) 
+            for j = 1 : size(data1ext,2) 
 
-                sq_dim = [5, 5, 5, 5]; %rows down, rows up, cols down, cols up
-                if (i <= 5) %determine area of search
+                sq_dim = [5, 5, 5, 5]; 
+                if (i <= 5) 
                     sq_dim(1) = i - 1;
                 elseif (i > (size(data1ext,1) - 5))
                     sq_dim(2) = size(data1ext,1) - i;
@@ -41,19 +41,19 @@ if any(ch_coloc == ROI_main_ch)
                 end
 
                 num_hits = numel(find(data1ext( i-sq_dim(1):i+sq_dim(2) , j-sq_dim(3):j+sq_dim(4) ) > ...
-                    (itsty_lvl * cond) )); % lokalnie: mean(mean( data1( i-sq_dim(1):i+sq_dim(2) , j-sq_dim(3):j+sq_dim(4) ) )) ))); %find how many pixels in area meet the criterium of 1/4 mask being brighter than given intensity level
+                    (itsty_lvl * cond) )); 
 
-                if ( num_hits < (0.65 * sum(sq_dim(1:2)) * sum(sq_dim(3:4))) ) %include or exclude (smaller factor means more px assigned to ROI)
-                    roi_matrix(i,j) = 0; %number of bright px is smaller than a piece of area
+                if ( num_hits < (0.65 * sum(sq_dim(1:2)) * sum(sq_dim(3:4))) )
+                    roi_matrix(i,j) = 0; 
                 else
-                    roi_matrix(i,j) = 1; %number of bright px is bigger than a piece of area
+                    roi_matrix(i,j) = 1; 
                 end
 
             end
         end
 
-        roi_matrix = imfill(and(bwareaopen(roi_matrix,1), bwareaopen(roi_matrix, 500)), 'holes'); %delete big noise
-        roi_matrix = imclose(roi_matrix, sq); %smoothen
+        roi_matrix = imfill(and(bwareaopen(roi_matrix,1), bwareaopen(roi_matrix, 500)), 'holes'); 
+        roi_matrix = imclose(roi_matrix, sq); 
 
         [bndrs, labeled_image] = bwboundaries(roi_matrix, 'noholes');
         num_objects = max(max(labeled_image));

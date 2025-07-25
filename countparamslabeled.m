@@ -1,0 +1,9 @@
+function [temp_labeled] = countparamslabeled(labeled_image, data0)
+
+    temp_labeled = regionprops('table', labeled_image, data0, 'Area', 'Centroid', 'MajorAxisLength', ...
+        'MinorAxisLength', 'Circularity', 'Perimeter', 'Orientation', 'WeightedCentroid', ...
+        'MeanIntensity', 'MinIntensity', 'MaxIntensity'); %obliczenie parametrów 
+%     [mean_inten_all, mean_inten, min_inten, max_inten] = countintsty(data0, ...
+%         Iout, num_objects, labeled_image); %Iout2!! Bez małych artefaktów przyklejonych do komórek
+
+end

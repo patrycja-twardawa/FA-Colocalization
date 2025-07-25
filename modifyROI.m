@@ -1,6 +1,6 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
     modifyROI(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, temp_add_map, ...
-    FA, colocalization, varargin)
+    FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -11,9 +11,17 @@ try
         if FA
             data1ext = data1;
             disp("Image used for FOCAL ADHESIONS add-on will be used for ROI modification.");
+            if ~contrast_visual_flag
+                data1disp = imadjust(data1, lh_lim_user);
+                disp("Image with user contrast settings will be used for display.");
+            end
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
+            if ~contrast_visual_flag
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_lim_coloc_user);
+                disp("Image with user contrast settings will be used for display.");
+            end
             disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for ROI modification."));
             d1_flag = 1;
         end
@@ -22,7 +30,7 @@ try
 
             h = figure;
             loop_count = 1;
-            set(h, 'WindowKeyPressFcn', {@KeyPressed, h}); %listen to loop break {@KeyPressed, h}
+            set(h, 'WindowKeyPressFcn', {@KeyPressed, h}); 
             l = 1;
             break_flag = 0;
             temp_Iout_ncirc = Iout_ncirc;
@@ -31,8 +39,8 @@ try
                 add_map = zeros(size(data1ext));
             end
             if ~isempty(varargin)
-                Iout_circ = varargin{1}; %function variable prepared for future changes
-                temp_Iout_circ = Iout_circ; %function variable prepared for future changes
+                Iout_circ = varargin{1}; 
+                temp_Iout_circ = Iout_circ; 
                 varargout{1} = Iout_circ;
                 varargout{2} = temp_Iout_circ;
                 s_del1 = "Choose area to be DELETED from ROI.";
@@ -58,7 +66,13 @@ try
 
             while loop_count
                 add_overlay = cat(3, im2uint16(Iout_ncirc), im2uint16(data1ext), im2uint16(Iout_ncirc));
-                imshow(add_overlay); hold on;
+                if ~contrast_visual_flag
+                   add_overlay_disp = cat(3, im2uint16(Iout_ncirc), im2uint16(data1disp), ...
+                       im2uint16(Iout_ncirc));
+                   imshow(add_overlay_disp); hold on;
+                else
+                   imshow(add_overlay); hold on;
+                end
                 roi = images.roi.AssistedFreehand('Color', 'y', 'MarkerSize', 3, ...
                     'LineWidth', 2);
                 draw(roi);
@@ -67,15 +81,13 @@ try
                 if mod_flag
                     Iout_ncirc(createMask(roi)) = 0;
                     add_map(createMask(roi)) = 0;
-                    %Iout_ncirc = imfill(Iout_ncirc, 'holes');
                     if ~isempty(varargin)
                         varargout{3} = add_overlay;
                     end
                     disp(s_del2);
                 else
-                    Iout_ncirc(createMask(roi)) = 1; % double(data1((createMask(roi))));
+                    Iout_ncirc(createMask(roi)) = 1; 
                     add_map(createMask(roi)) = 1;
-                    %Iout_ncirc = imfill(Iout_ncirc, 'holes');
                     if ~isempty(varargin)
                         varargout{3} = add_overlay;
                     end

@@ -1,6 +1,7 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
     talUndoRepeat(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc_old, temp_Iout_ncirc_old, l, ...
-    add_map_old, temp_add_map_old, FA, colocalization, varargin)
+    add_map_old, temp_add_map_old, FA, colocalization, contrast_visual_flag, lh_lim_user, ...
+    lh_lim_coloc_user, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -8,9 +9,17 @@ try
         d1_flag = 0;
         if FA
             data1ext = data1;
+            if ~contrast_visual_flag
+                data1disp = imadjust(data1, lh_lim_user);
+                disp("Image with user contrast settings will be used for display.");
+            end
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
+            if ~contrast_visual_flag
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_lim_coloc_user);
+                disp("Image with user contrast settings will be used for display.");
+            end
             d1_flag = 1;
         end
 
@@ -29,7 +38,13 @@ try
 
             fig202 = figure(202);
             add_overlay = cat(3, im2uint16(Iout_ncirc), im2uint16(data1ext), im2uint16(Iout_ncirc));
-            imshow(add_overlay); hold on;
+            if ~contrast_visual_flag
+               add_overlay_disp = cat(3, im2uint16(Iout_ncirc), im2uint16(data1disp), ...
+                   im2uint16(Iout_ncirc));
+               imshow(add_overlay_disp); hold on;
+            else
+               imshow(add_overlay); hold on;
+            end
             if ~isempty(varargin)
                 varargout{3} = add_overlay;
             end
