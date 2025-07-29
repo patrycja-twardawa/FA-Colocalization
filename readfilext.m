@@ -12,7 +12,7 @@ if colocalization
         disp(strcat("Choose ", rgb_nam_tab(ch_coloc(1)), " channel file.")); 
         [name2CH(1), info2CH{1}, read_flag2CH(1), filepath2CH(1), dataC2CH(:,:,1)] = readfile(ch_coloc(1)); %1st channel read
         disp(strcat("Choose ", rgb_nam_tab(ch_coloc(2)), " channel file.")); 
-        [name2CH(2), info2CH{2}, read_flag2CH(2), filepath2CH(2), dataC2CH(:,:,2)] = readfile(ch_coloc(1)); %2nd channel read
+        [name2CH(2), info2CH{2}, read_flag2CH(2), filepath2CH(2), dataC2CH(:,:,2)] = readfile(ch_coloc(2)); %2nd channel read
 
         data12CH(:,:,1) = rescale(im2double(dataC2CH(:,:,1)), 0, 1); 
         data12CH(:,:,2) = rescale(im2double(dataC2CH(:,:,2)), 0, 1); 
