@@ -57,7 +57,7 @@ binarization_met = 3; %0 - adaptive segmentation (low sensitivity); 1 - global s
 rb_method = 0; %0 - rolling ball radius method, 1 - morph. opening method
 
 % IMAGE PROCESSING PARAMETERS
-se = strel('sphere', 2); %structural element size for morphological operations - smaller window gives less of "structure shape deluge"
+se = strel('disk', 2); %structural element size for morphological operations - smaller window gives less of "structure shape deluge"
 gauss_sd = 3; %standard deviation for square structural element (Gaussian filtration)
 rb_thresh = 2; %size of radius for rolling ball radius background subtraction algorithm (higher values - more visible structures, less px assigned to background)
 
@@ -95,8 +95,6 @@ ROI_main_ch = 2; %number of channel for which CELL ROI will be extracted, if foc
 % IMAGE PROCESSING PARAMETERS
 lh_lim_coloc = [0.02, 0.6, 0.02, 0.6]; %lower and upper intensity limits (0-1) [1st image low & high, 2nd image low & high], under or over which intensities are scaled as min / max
 lh_lim_coloc_user = [0.02, 0.6; 0.02, 0.6]; %lower and upper intensity limits (0-1) [1st image low & high, 2nd image low & high], used only for USER display
-
-% TUUUUUU UWAGA zmienione działanie w nowej wersji skryptu, opis jest ok – teraz poprzednie warunki wypieprzają najmniejsze obiekty całkowicie, a zezwalają na wpuszczenie mniejszych, jeśli świecą jasno
 
 % DISPLAY FEATURES
 labels_cbar = {'CH1 intensity MAX', 'Equal intensity', 'CH2 intensity MAX'}; %label for tested proteins (G channel on left, R on right - names will be displayed for map legends)
