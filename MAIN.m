@@ -32,8 +32,6 @@ clc; clear; close all; %RESET
 % Please ensure that at least one add-on is selected. 
 % Without making any selection, script will not proceed correctly.
 
-clear; clc; close all;
-
 FA = 1;                 %FOCAL ADHESIONS ADD-ON (ON/OFF): 0 - focal adhesions segmentation and feature extraction OFF, 1 - focal adhesions segmentation and feature extraction ON (1 image channel required)
 colocalization = 1;     %COLOCALIZATION ADD-ON (ON/OFF): 0 - colocalization maps preparation OFF, 1 - colocalization maps preparation ON (2 image channels required)
 
@@ -117,7 +115,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 
 [name2CH, info2CH, read_flag2CH, filepath2CH, dataC2CH, data12CH, sum_map, ...
     save_default_name, info, read_flag, filepath, dataC, data1, px_size, px_flag, ring_diameter] = ...
-        readfilext(ch_coloc, read_image_flag, ch_tal, ring_diameter_um, name2CH, info2CH, ...
+        readfilext(ch_coloc, read_flag, ch_tal, ring_diameter_um, name2CH, info2CH, ...
         read_flag2CH, filepath2CH, dataC2CH, data12CH, sum_map, save_default_name, info, ...
         read_flag, filepath, dataC, data1, px_size, px_flag, ring_diameter, FA, colocalization);
 
