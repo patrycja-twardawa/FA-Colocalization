@@ -44,7 +44,7 @@ colocalization = 1;     %COLOCALIZATION ADD-ON (ON/OFF): 0 - colocalization maps
 % METHOD EXECUTION FLAGS (ON / OFF)
 auto_roi_flag = 1;          %Extraction of ROI method (AUTO [1]/ USER [0]): 0 - choose cell ROI manually, 1 - choose cell ROI automatically
 contrast_flag = 0;          %Contrast adjustment method (AUTO [0-1] / USER [2]): 0 - applied automated limits for image analysis (independent of visualisation for ROI selection), 1 - applied automated Otsu contrast limits for image analysis, 2 - applied user-chosen contrast limits for contrast adjustment
-contrast_visual_flag = 0;   %0 – contrast settings defined by automated adjustment or specified in lh_lim_tal or lh_lim_coloc will be used for both calculations and visualization; 1 – contrast settings defined in lh_lim_tal_user or lh_lim_coloc_user will be used for visualization only, while those in lh_lim_tal or lh_lim_coloc / automatic contrast will be used for calculations
+contrast_visual_flag = 0;   %0 – contrast settings defined by user will be shown in visualisation; 1 – contrast settings chosen automaticaly will be used both for visualisation and calculations
 denoise_flag = 1;           %0 - denoising OFF, 1 - CNN-assisted denoising ON (denoising helps in achieving better effects, but radically increases operation time of script); 2 - morphological operations-based denoising ON
 rb_flag = 0;                %0 - background subtraction OFF, 1 - background subtraction ON
 filt_flag = 2;              %0 - bilateral filtering with high smoothing degree, 1 - Gaussian filtering, 2 - bilateral filtering with degree of smoothing larger than variance of the noise, 3 - Savitzky-Golay filtering with low order and small frame
@@ -93,7 +93,7 @@ ROI_main_ch = 2; %number of channel for which CELL ROI will be extracted, if foc
 
 % IMAGE PROCESSING PARAMETERS
 lh_lim_coloc = [0.02, 0.6, 0.02, 0.6]; %lower and upper intensity limits (0-1) [1st image low & high, 2nd image low & high], under or over which intensities are scaled as min / max
-lh_lim_coloc_user = [0.02, 0.6; 0.02, 0.6]; %lower and upper intensity limits (0-1) [1st image low & high, 2nd image low & high], used only for USER display
+lh_lim_coloc_user = [0.02, 0.6, 0.02, 0.6]; %lower and upper intensity limits (0-1) [1st image low & high, 2nd image low & high], used only for USER display
 
 % DISPLAY FEATURES
 labels_cbar = {'CH1 intensity MAX', 'Equal intensity', 'CH2 intensity MAX'}; %label for tested proteins (G channel on left, R on right - names will be displayed for map legends)

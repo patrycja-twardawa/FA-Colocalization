@@ -23,8 +23,8 @@ try
         end
         
         if ~contrast_visual_flag
-            disp_im_coloc1 = imadjust(data12CH_ctr(:,:,1), lh_lim_coloc_user(1,1:2));
-            disp_im_coloc2 = imadjust(data12CH_ctr(:,:,2), lh_lim_coloc_user(2,1:2));
+            disp_im_coloc1 = imadjust(data12CH_ctr(:,:,1), lh_lim_coloc_user(1:2));
+            disp_im_coloc2 = imadjust(data12CH_ctr(:,:,2), lh_lim_coloc_user(3:4));
             
             figure; imshow(disp_im_coloc1);
             title("Colocalization first channel, user display settings");
