@@ -130,7 +130,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 % WARNING: Cell nucleus ROI is not extracted with the automated procedure. If you
 % intend to add this, use manual clause in the section below.
 
-binaryImage = talROICorr(data1, data12CH, ROI_main_ch, ch_coloc, itsty_lvl, binaryImage, FA, colocalization); %do not modify this statement, or the statements below
+binaryImage = talROICorr(data1, data12CH, ROI_main_ch, ch_coloc, itsty_lvl_ROI, binaryImage, FA, colocalization); %do not modify this statement, or the statements below
 
 %% USER INPUT SECTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
