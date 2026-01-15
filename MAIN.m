@@ -123,7 +123,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 % NOTICE: Section execution may be repeated many times before proceeding.
 % Each change demands reloading and changing contrast settings in the sections above.
 
-[data12CH, data1] = contrAdjust(lh_lim, lh_lim_user, lh_lim_coloc, lh_lim_coloc_user, ...
+[data12CH, data1] = contrAdjust(lh_lim_tal, lh_lim_tal_user, lh_lim_coloc, lh_lim_coloc_user, ...
     data12CH, data1, contrast_flag, contrast_visual_flag, FA, colocalization); %do not modify this statement, or the statements below
 
 %% AUTO CHOICE OF ROI

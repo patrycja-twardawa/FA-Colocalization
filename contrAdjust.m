@@ -1,4 +1,4 @@
-function [data12CH, data1] = contrAdjust(lh_lim, lh_lim_user, lh_lim_coloc, lh_lim_coloc_user, ...
+function [data12CH, data1] = contrAdjust(lh_lim_tal, lh_lim_tal_user, lh_lim_coloc, lh_lim_coloc_user, ...
     data12CH, data1, contrast_flag, contrast_visual_flag, FA, colocalization)
 
 try
@@ -40,7 +40,7 @@ try
     end
     if FA
             if contrast_flag
-                data1 = imadjust(rescale(double(data1), 0, 1), lh_lim);
+                data1 = imadjust(rescale(double(data1), 0, 1), lh_lim_tal);
                 disp("User-chosen contrast limits applied for analysis in FA add-on.");
             else
                 data1 = imadjust(rescale(double(data1), 0, 1));
@@ -48,7 +48,7 @@ try
             end
             
             if ~contrast_visual_flag
-                disp_im_fa = imadjust(rescale(double(data1), 0, 1), lh_lim_user);
+                disp_im_fa = imadjust(rescale(double(data1), 0, 1), lh_lim_tal_user);
 
                 figure; imshow(disp_im_fa);
                 title("Focal Adhesions single channel, user display settings");
