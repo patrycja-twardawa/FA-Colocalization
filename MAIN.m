@@ -33,7 +33,7 @@ clc; clear; close all; %RESET
 % Please ensure that at least one add-on is selected. 
 % Without making any selection, script will not proceed correctly.
 
-FA = 1;                 %FOCAL ADHESIONS ADD-ON (ON/OFF): 0 - focal adhesions segmentation and feature extraction OFF, 1 - focal adhesions segmentation and feature extraction ON (1 image channel required)
+FA = 0;                 %FOCAL ADHESIONS ADD-ON (ON/OFF): 0 - focal adhesions segmentation and feature extraction OFF, 1 - focal adhesions segmentation and feature extraction ON (1 image channel required)
 colocalization = 1;     %COLOCALIZATION ADD-ON (ON/OFF): 0 - colocalization maps preparation OFF, 1 - colocalization maps preparation ON (2 image channels required)
 
 %% OPTIONS (USER INPUT)
@@ -125,7 +125,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 % Each change demands reloading and changing contrast settings in the sections above.
 
 [data12CH, data12CH_ctr, data1] = contrAdjust(lh_lim_tal, lh_lim_tal_user, lh_lim_coloc, ...
-    lh_lim_coloc_user, data12CH, data12CH_ctr, data1, contrast_flag, contrast_visual_flag, ...
+    lh_lim_coloc_user, data12CH, data12CH_ctr, dataC, contrast_flag, contrast_visual_flag, ...
     FA, colocalization); %do not modify this statement, or the statements below
 
 %% AUTO CHOICE OF ROI
@@ -156,7 +156,7 @@ binaryImage = selectROI(data1, "CELL", data12CH, ch_coloc, ROI_main_ch, ...
 % WARNING: The cell nucleus area can be extracted only manually.
 
 binaryImage2 = selectROI(data1, "CELL NUCLEUS", data12CH, ch_coloc, ROI_main_ch, ...
-    lh_lim_user, lh_lim_coloc_user, contrast_visual_flag, FA, colocalization); %do not modify this statement, or the statements below
+    lh_lim_tal_user, lh_lim_coloc_user, contrast_visual_flag, FA, colocalization); %do not modify this statement, or the statements below
 
 %% CELL ROI MODIFICATION: MANUAL CORRECTION OF ROI %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTICE: During one session (one window opening) user can add or subtract multiple areas from CELL ROI 
@@ -167,17 +167,17 @@ binaryImage2 = selectROI(data1, "CELL NUCLEUS", data12CH, ch_coloc, ROI_main_ch,
 % Use this section to delete chosen areas from CELL ROI.
 % INFO: PRESS ANY KEY TO CLOSE THE WINDOW AND SAVE RESULTS
 
-[binaryImage, temp_binaryImage, l, add_map, temp_add_map] = modifyROI(data1, data12CH, ...
+[binaryImage, temp_binaryImage, l, add_map, temp_add_map] = modifyROI(data1, dataC, data12CH, ...
     ROI_main_ch, ch_coloc, binaryImage, 1, add_map, temp_add_map, FA, colocalization, ...
-    contrast_visual_flag, lh_lim_user, lh_lim_coloc_user); %do not modify this statement, or the statements above / below
+    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user); %do not modify this statement, or the statements above / below
 
 %% ADD OBJECTS TO CELL ROI
 % Use this section to add chosen areas to CELL ROI.
 % INFO: PRESS ANY KEY TO CLOSE THE WINDOW AND SAVE RESULTS
 
-[binaryImage, temp_binaryImage, l, add_map, temp_add_map] = modifyROI(data1, data12CH, ...
+[binaryImage, temp_binaryImage, l, add_map, temp_add_map] = modifyROI(data1, data12CH, dataC, ...
     ROI_main_ch, ch_coloc, binaryImage, 0, add_map, temp_add_map, FA, colocalization, ...
-    contrast_visual_flag, lh_lim_user, lh_lim_coloc_user); %do not modify this statement, or the statements above / below
+    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user); %do not modify this statement, or the statements above / below
 
 %% UNDO / REDO CELL ROI MANUAL CHANGES
 % When you run this section and last operation was UNDO, the next will be REDO.
@@ -186,8 +186,8 @@ binaryImage2 = selectROI(data1, "CELL NUCLEUS", data12CH, ch_coloc, ROI_main_ch,
 % will not be available anymore. 
 
 [binaryImage, temp_binaryImage, l, add_map, temp_add_map] = ...
-    talUndoRepeat(data1, data12CH, ROI_main_ch, ch_coloc, binaryImage, temp_binaryImage, l, ...
-    add_map, temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, ...
+    talUndoRepeat(data1, dataC, data12CH, ROI_main_ch, ch_coloc, binaryImage, temp_binaryImage, l, ...
+    add_map, temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, ...
     lh_lim_coloc_user); %do not modify this statement, or the statements above / below
 
 % END OF SECTION FOR MODIFICATION / USER INPUT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,7 +233,7 @@ end
 
 % HERE: add number of ring designation for faster initialization display
 if FA
-    talDispRings(data1, ir_rings, ring_number, contrast_visual_flag, lh_lim_user); %do not modify this statement, or the statements above / below
+    talDispRings(data1, ir_rings, ring_number, contrast_visual_flag, lh_lim_tal_user, dataC); %do not modify this statement, or the statements above / below
 end
 
 % END OF SECTION FOR MODIFICATION / USER INPUT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -269,8 +269,8 @@ end
 
 if FA
     [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, Iout_circ, temp_Iout_circ, add_overlay] = ...
-        modifyROI(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 1, add_map, temp_add_map, ...
-        FA, colocalization, Iout_circ); %do not modify this statement, or the statements above / below
+        modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 1, add_map, ...
+        temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, Iout_circ); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | ADD OBJECTS TO SEGMENTATION ROI
@@ -279,8 +279,8 @@ end
 
 if FA
     [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, Iout_circ, temp_Iout_circ, add_overlay] = ...
-        modifyROI(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 0, add_map, temp_add_map, ...
-        FA, colocalization, Iout_circ); %do not modify this statement, or the statements above / below
+        modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 0, add_map, ...
+        temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, Iout_circ); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | UNDO / REDO FOR SEGMENTATION ROI
@@ -291,8 +291,9 @@ end
 
 if FA
     [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, Iout_circ, temp_Iout_circ, add_overlay] = ...
-        talUndoRepeat(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, temp_Iout_ncirc, l, add_map, ...
-        temp_add_map, FA, colocalization, Iout_circ, temp_Iout_circ); %do not modify this statement, or the statements above / below
+        talUndoRepeat(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, temp_Iout_ncirc, l, add_map, ...
+        temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, Iout_circ, ...
+        temp_Iout_circ); %do not modify this statement, or the statements above / below
 end
 
 % END OF SECTION FOR MODIFICATION / USER INPUT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -10,9 +10,9 @@ if colocalization
     try
         disp("Reading image channels for COLOCALIZATION add-on...");
         disp(strcat("Choose ", rgb_nam_tab(ch_coloc(1)), " channel file.")); 
-        [name2CH(1), info2CH{1}, read_flag2CH(1), filepath2CH(1), dataC2CH(:,:,1)] = readfile(ch_coloc(1)); %1st channel read
+        [name2CH(1), info2CH{1}, read_flag2CH(1), filepath2CH(1), dataC2CH(:,:,1)] = readfile(ch_coloc(1), filepath2CH(1)); %1st channel read
         disp(strcat("Choose ", rgb_nam_tab(ch_coloc(2)), " channel file.")); 
-        [name2CH(2), info2CH{2}, read_flag2CH(2), filepath2CH(2), dataC2CH(:,:,2)] = readfile(ch_coloc(2)); %2nd channel read
+        [name2CH(2), info2CH{2}, read_flag2CH(2), filepath2CH(2), dataC2CH(:,:,2)] = readfile(ch_coloc(2), filepath2CH(1)); %2nd channel read
 
         data12CH(:,:,1) = rescale(im2double(dataC2CH(:,:,1)), 0, 1); 
         data12CH(:,:,2) = rescale(im2double(dataC2CH(:,:,2)), 0, 1); 
@@ -26,7 +26,7 @@ if colocalization
 end
 if FA
     try
-        if read_image_flag
+        if ~read_image_flag
             disp("Reading image channels for FA add-on...");
             if colocalization && any(ch_coloc == ch_tal)
                 doubled_ch = ch_coloc(ch_coloc == ch_tal);
@@ -38,7 +38,7 @@ if FA
                 disp(strcat("Channel ", num2str(doubled_ch), " (", rgb_nam_tab(doubled_ch), ...
                     ") data has been copied from COLOCALIZATION add-on."));
             else
-                [save_default_name, info, read_flag, filepath, dataC] = readfile(ch_tal); 
+                [save_default_name, info, read_flag, filepath, dataC] = readfile(ch_tal, filepath); 
             end
                 
                 [px_size, px_flag, ring_diameter] = talReadPxSize(info, px_size, px_flag, ...

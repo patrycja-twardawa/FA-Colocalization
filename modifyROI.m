@@ -1,6 +1,6 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
-    modifyROI(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, temp_add_map, ...
-    FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, varargin)
+    modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, ...
+    temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -12,14 +12,19 @@ try
             data1ext = data1;
             disp("Image used for FOCAL ADHESIONS add-on will be used for ROI modification.");
             if ~contrast_visual_flag
-                data1disp = imadjust(data1, lh_lim_user);
+                data1disp = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);
                 disp("Image with user contrast settings will be used for display.");
             end
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
             if ~contrast_visual_flag
-                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_lim_coloc_user);
+                if (ROI_main_ch == 1)
+                    lh_temp = lh_lim_coloc_user(1:2);
+                else
+                    lh_temp = lh_lim_coloc_user(3:4);
+                end
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
                 disp("Image with user contrast settings will be used for display.");
             end
             disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for ROI modification."));

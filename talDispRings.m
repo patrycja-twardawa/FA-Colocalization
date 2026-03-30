@@ -1,12 +1,15 @@
-function talDispRings(data1, ir_rings, ring_number, contrast_visual_flag, lh_lim_user)
+function talDispRings(data1, ir_rings, ring_number, contrast_visual_flag, lh_lim_user, dataC)
 
 try
     if (ring_number <= size(ir_rings,3))
-    tt = data1;   
-    tt(ir_rings(:,:,ring_number) == 1) = 1;
     if ~contrast_visual_flag
-        data_overlay_ir = cat(3, im2uint16(tt), imadjust(data1, lh_lim_user), im2uint16(data1));
+        tt = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);   
+        tt(ir_rings(:,:,ring_number) == 1) = 1;
+        dataC_adj = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);
+        data_overlay_ir = cat(3, im2uint16(tt), im2uint16(dataC_adj), im2uint16(dataC_adj));
     else
+        tt = data1;   
+        tt(ir_rings(:,:,ring_number) == 1) = 1;
         data_overlay_ir = cat(3, im2uint16(tt), im2uint16(data1), im2uint16(data1));
     end
     figure(500);

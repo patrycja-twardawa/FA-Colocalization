@@ -19,7 +19,12 @@ try
             data1ext = data12CH(:,:,ROI_main_ch);
             disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for manual ROI extraction."));
             if ~contrast_visual_flag
-                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_lim_coloc_user);
+                if (ROI_main_ch == 1)
+                    lh_temp = lh_lim_coloc_user(1:2);
+                else
+                    lh_temp = lh_lim_coloc_user(3:4);
+                end
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
                 disp("Image with user contrast settings will be used for display.");
             end
             d1_flag = 1;

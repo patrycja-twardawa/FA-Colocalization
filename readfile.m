@@ -1,7 +1,12 @@
-function [save_default_name, info, read_flag, filepath, dataC] = readfile(ch)
+function [save_default_name, info, read_flag, filepath, dataC] = readfile(ch, filepath)
 
 try
-    [filename, filepath] = uigetfile({'*.tiff; *.tif'}, 'Choose image file.'); 
+%     if (filepath == "")
+        [filename, filepath] = uigetfile({'*.tif'; '*.tiff'}, 'Choose image file.'); 
+%     else
+%         [filename, filepath] = uigetfile({[char(filepath), '*.tif; ']; [char(filepath), '*.tiff']}, ...
+%             'Choose image file.');
+%     end
     filename = string(filename);
     filepath = string(filepath);
     save_default_name = erase(strcat('Results-', filename, '-', strrep(datestr(datetime('now')), ...

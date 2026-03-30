@@ -1,5 +1,5 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
-    talUndoRepeat(data1, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc_old, temp_Iout_ncirc_old, l, ...
+    talUndoRepeat(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc_old, temp_Iout_ncirc_old, l, ...
     add_map_old, temp_add_map_old, FA, colocalization, contrast_visual_flag, lh_lim_user, ...
     lh_lim_coloc_user, varargin)
 
@@ -10,14 +10,19 @@ try
         if FA
             data1ext = data1;
             if ~contrast_visual_flag
-                data1disp = imadjust(data1, lh_lim_user);
+                data1disp = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);   
                 disp("Image with user contrast settings will be used for display.");
             end
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
             if ~contrast_visual_flag
-                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_lim_coloc_user);
+                if (ROI_main_ch == 1)
+                    lh_temp = lh_lim_coloc_user(1:2);
+                else
+                    lh_temp = lh_lim_coloc_user(3:4);
+                end
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
                 disp("Image with user contrast settings will be used for display.");
             end
             d1_flag = 1;
@@ -49,11 +54,12 @@ try
                 varargout{3} = add_overlay;
             end
 
+            figure(fig202);
             if l
-                title(fig202, "REDO processed");
+                title("REDO processed");
                 disp("REDO operation processed. Binary maps prepared during previous USER-assisted modification were retrieved.");
             else
-                title(fig202, "UNDO processed");
+                title("UNDO processed");
                 disp("UNDO operation processed. Binary maps from before USER-assisted modification were retrieved.");
             end
         else
