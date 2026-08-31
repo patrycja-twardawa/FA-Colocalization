@@ -1,4 +1,5 @@
-function [px_size, px_flag, temp, int_rings_tab] = talPxTransfer(temp, int_rings_tab, px_size, px_flag)
+function [px_size, px_flag, temp, int_rings_tab, total_area] = ...
+    talPxTransfer(temp, int_rings_tab, px_size, px_flag, total_area)
 
 try
     if ((px_flag == 1) && ~isempty(px_size))
@@ -14,7 +15,11 @@ try
         int_rings_tab.Area = (px_size(1) * px_size(2)) * int_rings_tab.Area;
         int_rings_tab.BorderDistance = px_size(1) * int_rings_tab.BorderDistance;
 
+        total_area(3) = px_size(1) * px_size(2) * total_area(1);
+        total_area(4) = px_size(1) * px_size(2) * total_area(2);
+        
         px_flag = 0;
+        
         disp("Distances in px have been successfully transferred to real distances.");
     else
         disp("(W16) FOCAL ADHESIONS ADD-ON | WARNING: This operation cannot be called if you have already performed one transfer to real size units.");

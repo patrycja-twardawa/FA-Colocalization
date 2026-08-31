@@ -1,4 +1,5 @@
-function roi_matrix = talROICorr(data1, data12CH, ROI_main_ch, ch_coloc, itsty_lvl, roi_matrix, FA, colocalisation)
+function [roi_matrix, total_area] = talROICorr(data1, data12CH, ROI_main_ch, ch_coloc, itsty_lvl, ...
+    roi_matrix, FA, colocalisation, total_area, px_size)
 
 try
 if any(ch_coloc == ROI_main_ch) 
@@ -79,6 +80,11 @@ if any(ch_coloc == ROI_main_ch)
         else
             throw(exception);
         end
+        
+        total_area(1) = numel(find(roi_matrix));
+        total_area(3) = px_size(1) * px_size(2) * double(numel(find(roi_matrix)));
+        disp(strcat( "Total cell ROI area: ", num2str(total_area(1)), " px; ", ...
+            num2str(total_area(3)) , " um^2"));
 
         figure(1);
         imshow(roi_matrix);
@@ -91,16 +97,19 @@ if any(ch_coloc == ROI_main_ch)
         disp("Automated CELL ROI extraction has been performed successfully. Apply eventual changes manually, if necessary.");
     else
         roi_matrix = [];
+        total_area = zeros(1,4);
         if dl_flag
             disp("(E6) ERROR: Image is too small for automated ROI correction. Try to perform CELL ROI choice manually.");
         end
     end
 else
-    disp("(E7) ERROR: Chosen channel for ROI extraction is not read due to USER'S choice. Please check USER INPUT variable section ('ROI_main_ch' variable).");
     roi_matrix = [];
+    total_area = zeros(1,4);
+    disp("(E7) ERROR: Chosen channel for ROI extraction is not read due to USER'S choice. Please check USER INPUT variable section ('ROI_main_ch' variable).");
 end
 catch
     roi_matrix = [];
+    total_area = zeros(1,4);
     disp("(E9) ERROR: No object found. Automated CELL ROI extraction failed. Please, choose CELL ROI manually and check image data beforehand.");
 end
 

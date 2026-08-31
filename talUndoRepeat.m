@@ -1,7 +1,7 @@
-function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
+function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, total_area, varargout] = ...
     talUndoRepeat(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc_old, temp_Iout_ncirc_old, l, ...
     add_map_old, temp_add_map_old, FA, colocalization, contrast_visual_flag, lh_lim_user, ...
-    lh_lim_coloc_user, varargin)
+    lh_lim_coloc_user, total_area, px_size, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -34,6 +34,11 @@ try
             Iout_ncirc = temp_Iout_ncirc_old;
             temp_add_map = add_map_old;
             add_map = temp_add_map_old;
+            
+            total_area(1) = numel(find(Iout_ncirc));
+            total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+            disp(strcat( "Total cell ROI area recalculated to previous value: ", num2str(total_area(1)), ...
+                " px; ", num2str(total_area(3)) , " um^2"));
 
             if ~isempty(varargin)
                 varargout{1} = varargin{2};

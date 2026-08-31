@@ -1,5 +1,6 @@
 function talDisplayAll(data1, ch, Iout_circ, Iout_ncirc, bndrs, temp, labeled_im, int_rings_tab, ...
-    ring_diameter, px_size, t_centr, labeled_im_nucleus, labeled_im_cytoplasm, filepath, save_default_name)
+    ring_diameter, px_size, t_centr, labeled_im_nucleus, labeled_im_cytoplasm, filepath, ...
+    save_default_name, total_area)
 
 try  
     close all;
@@ -96,6 +97,9 @@ try
     grid on;
     saveas(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.tif'));
     savefig(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.fig'));
+    
+    disp(strcat("Total cell ROI area: ", num2str(total_area(3)), " um^2"));
+    disp(strcat("Total cell nucleus ROI area: ", num2str(total_area(4)), " um^2"));
     
     disp("Results have been displayed.");  
 catch

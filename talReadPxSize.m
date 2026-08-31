@@ -1,13 +1,17 @@
-function [px_size, px_flag, ring_diameter] = talReadPxSize(info, px_size, px_flag, ring_diameter_um, ring_diameter)
+function [px_size, px_flag, ring_diameter] = talReadPxSize(info, px_size, px_flag, px_size_flag, ...
+    ring_diameter_um, ring_diameter)
 
 try
     if isempty(px_size)
         px_flag = 1; %allow for pixel recounting
     
-    if ~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution > 0)
+    if (~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution > 0) && ...
+            ~px_size_flag)
         px_size = [1/info(1).YResolution, 1/info(1).XResolution];
         disp("Pixel size has been read from image metadata.");
-    elseif ~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution >= 1)    
+        disp("WARNING: Assumed size unit is um! In case of different unit used in metadata, please overwrite manually.");
+    elseif (~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution >= 1) ...
+            && ~px_size_flag)
         xt = input("WARNING: Unexpected pixel size. Check file for metadata corruption. Add size of pixel in um: ");
         px_size = [xt, xt];
         disp("Assumption about square pixel shape accepted.");

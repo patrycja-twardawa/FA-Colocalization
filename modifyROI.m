@@ -1,6 +1,7 @@
-function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, varargout] = ...
+function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, total_area, varargout] = ...
     modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, ...
-    temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, varargin)
+    temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, ...
+    total_area, px_size, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -61,6 +62,12 @@ try
                 s_add2 = "Area has been ADDED to CELL ROI (cell outline).";
                 s_fin = "CELL ROI (cell outline) has been modified. Changes saved.";
                 s_exc = "WARNING: CELL ROI (cell outline) has not been modified. Check data and try again.";
+            
+                total_area(1) = numel(find(Iout_ncirc));
+                total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+                disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
+                num2str(total_area(3)) , " um^2"));
+            
             end
 
             if mod_flag

@@ -1,5 +1,5 @@
-function binaryImage = selectROI(data1, str, data12CH, ch_coloc, ROI_main_ch, ...
-    lh_lim_user, lh_lim_coloc_user, contrast_visual_flag, FA, colocalization)
+function [binaryImage, total_area] = selectROI(data1, str, data12CH, ch_coloc, ROI_main_ch, ...
+    lh_lim_user, lh_lim_coloc_user, contrast_visual_flag, FA, colocalization, total_area, px_size)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -47,6 +47,18 @@ try
             prpt2 = strcat("ROI ",  str, " chosen properly.");
             disp(prpt2{:});
             
+            if strcmp(str, "CELL")
+                area_idx = [1,3];
+                roi_text = "cell";
+            else
+                area_idx = [2,4];
+                roi_text = "cell nucleus";
+            end
+            total_area(area_idx(1)) = numel(find(binaryImage));
+            total_area(area_idx(2)) = px_size(1) * px_size(2) * double(numel(find(binaryImage)));
+            disp(strcat( "Total ", roi_text, " ROI area: ", num2str(total_area(1)), " px; ", ...
+                num2str(total_area(3)) , " um^2"));
+            
             figure(1);
             imshow(binaryImage);
             title(strcat(str, " ROI extracted manually"));
@@ -56,14 +68,17 @@ try
             title(strcat(str, "ROI over the cell image after contrast adjustment"));
         else
             binaryImage = [];
+            total_area = zeros(1,4);
             disp("(E5) ERROR: No add-on selected. Choose either FOCAL ADHESIONS, COLOCALIZATION, or both. Check USER INPUT variables.");
         end     
     else
         binaryImage = [];
+        total_area = zeros(1,4);
         disp("(E7) ERROR: Chosen channel for ROI extraction is not read due to USER'S choice. Please check USER INPUT variable section ('ROI_main_ch' variable).");
     end
 catch
     binaryImage = [];
+    total_area = zeros(1,4);
     prpt = strcat("(E10) ERROR: Failed attempt of ", str, " ROI choice. Check data and try again before proceeding further.");
     disp(prpt{:});
 end

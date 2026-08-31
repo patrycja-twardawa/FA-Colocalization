@@ -1,5 +1,6 @@
 function [filepath, save_default_name, fn, fp, info, read_flag, param_flag, binaryImage, binaryImage2, ...
-    temp_binaryImage, px_size, px_flag, add_map, temp_add_map, lh_lim_count, matfileread_flag] = varinit
+    temp_binaryImage, px_size, px_flag, add_map, temp_add_map, lh_lim_count, matfileread_flag, ...
+    total_area] = varinit
 
 % STRING VARIABLES (NAMES, PATHS)
 filepath = ""; %default file path for data save after execution of script
@@ -18,6 +19,7 @@ read_flag = 0; %0 - image file not read, 1 - image file read
 % NUMERIC DATA
 lh_lim_count = [0.1, 0.9]; %contrast limit default for automated contrast detection
 px_size = []; %size of pixel expressed in um (scale information)
+total_area = zeros(1,4); %total cell area (counted based on cell ROI and px dimensions) in px, cell nucl area in px, total cell area in um^2, cell nucleus area in um^2
 
 % BINARY MAPS
 binaryImage = zeros(2048,2048); %stage 0 binary map of all structures in ROI
