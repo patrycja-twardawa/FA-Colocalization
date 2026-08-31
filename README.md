@@ -31,7 +31,9 @@ For detailed information about individual processing and analysis steps, please 
 If you use this software in your research, please cite the associated publication:
 
 Hajduk J., Twardawa P., Rajfur Z. Software for semi-automatic analysis of microscopic images of adhesion structures and protein colocalization in cells. Micron. 2026;204:104020.
+
 DOI: 10.1016/j.micron.2026.104020
+
 URL: https://doi.org/10.1016/j.micron.2026.104020
 
 ## Notes
