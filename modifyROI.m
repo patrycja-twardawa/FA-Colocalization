@@ -54,14 +54,14 @@ try
                 s_add1 = "Choose area to be ADDED to ROI.";
                 s_add2 = "Area has been ADDED to ROI.";
                 s_fin = "ROI has been modified. Changes saved.";
-                s_exc = "WARNING: ROI has not been modified. Check data and try again.";
+                s_exc = "WARNING: ROI has not been modified. No changes applied.";
             else
                 s_del1 = "Choose area to be DELETED from CELL ROI (cell outline).";
                 s_del2 = "Area has been DELETED from CELL ROI (cell outline).";
                 s_add1 = "Choose area to be ADDED to CELL ROI (cell outline).";
                 s_add2 = "Area has been ADDED to CELL ROI (cell outline).";
                 s_fin = "CELL ROI (cell outline) has been modified. Changes saved.";
-                s_exc = "WARNING: CELL ROI (cell outline) has not been modified. Check data and try again.";
+                s_exc = "WARNING: CELL ROI (cell outline) has not been modified. No changes applied.";
             
                 total_area(1) = numel(find(Iout_ncirc));
                 total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
@@ -118,9 +118,13 @@ try
     end
         
 catch
-    if break_flag
+    if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))
         disp(s_fin);
     else
+        varargout{1} = varargin{1};
+        varargout{2} = varargin{1};
+        varargout{3} = cat(3, im2uint16(Iout_ncirc), im2uint16(data1ext), im2uint16(Iout_ncirc));
+        
         disp(s_exc);
     end
 end

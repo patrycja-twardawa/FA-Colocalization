@@ -4,7 +4,8 @@ function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, total_area, var
     lh_lim_coloc_user, total_area, px_size, varargin)
 
 try
-    if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
+    if ((colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)) && ...
+            ~isempty(find(temp_Iout_ncirc_old - Iout_ncirc_old))
 
         d1_flag = 0;
         if FA
@@ -75,13 +76,20 @@ try
             
             disp("(E5) FOCAL ADHESIONS ADD-ON | ERROR: No add-on selected. Choose either FA, COLOCALIZATION, or both. Check USER INPUT variables.");
         end
-    else
+    elseif ~isempty(find(temp_Iout_ncirc_old - Iout_ncirc_old))
         Iout_ncirc = Iout_ncirc_old;
         temp_Iout_ncirc = temp_Iout_ncirc_old;
         add_map = add_map_old;
         temp_add_map = temp_add_map_old;
         
         disp("(E8) FOCAL ADHESIONS ADD-ON | ERROR: Chosen channel for UNDO / REDO operations is not read due to USER'S choice. Please check USER INPUT variable section ('ROI_main_ch' variable).");
+    else
+        Iout_ncirc = Iout_ncirc_old;
+        temp_Iout_ncirc = temp_Iout_ncirc_old;
+        add_map = add_map_old;
+        temp_add_map = temp_add_map_old;
+        
+        disp("WARNING: UNDO / REDO not processed, while no modifications were applied to the original image in the previous step.");
     end
     
 catch
