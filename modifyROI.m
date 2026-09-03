@@ -112,11 +112,13 @@ try
     end
         
 catch
-    if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))        
-        total_area(1) = numel(find(Iout_ncirc));
-        total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
-        disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
-        num2str(total_area(3)) , " um^2"));
+    if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))  
+        if isempty(varargin)
+            total_area(1) = numel(find(Iout_ncirc));
+            total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+            disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
+                num2str(total_area(3)) , " um^2"));
+        end
         
         disp(s_fin);
     else

@@ -56,8 +56,8 @@ try
             end
             total_area(area_idx(1)) = numel(find(binaryImage));
             total_area(area_idx(2)) = px_size(1) * px_size(2) * double(numel(find(binaryImage)));
-            disp(strcat( "Total ", roi_text, " ROI area: ", num2str(total_area(1)), " px; ", ...
-                num2str(total_area(3)) , " um^2"));
+            disp(strcat( "Total ", roi_text, " ROI area: ", num2str( total_area(area_idx(1)) ), " px; ", ...
+                num2str( total_area(area_idx(2)) ) , " um^2"));
             
             figure(1);
             imshow(binaryImage);
