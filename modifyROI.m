@@ -61,13 +61,7 @@ try
                 s_add1 = "Choose area to be ADDED to CELL ROI (cell outline).";
                 s_add2 = "Area has been ADDED to CELL ROI (cell outline).";
                 s_fin = "CELL ROI (cell outline) has been modified. Changes saved.";
-                s_exc = "WARNING: CELL ROI (cell outline) has not been modified. No changes applied.";
-            
-                total_area(1) = numel(find(Iout_ncirc));
-                total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
-                disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
-                num2str(total_area(3)) , " um^2"));
-            
+                s_exc = "WARNING: CELL ROI (cell outline) has not been modified. No changes applied.";        
             end
 
             if mod_flag
@@ -118,7 +112,12 @@ try
     end
         
 catch
-    if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))
+    if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))        
+        total_area(1) = numel(find(Iout_ncirc));
+        total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+        disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
+        num2str(total_area(3)) , " um^2"));
+        
         disp(s_fin);
     else
         varargout{1} = varargin{1};

@@ -7,18 +7,37 @@ try
     
     if (~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution > 0) && ...
             ~px_size_flag)
-        px_size = [1/info(1).YResolution, 1/info(1).XResolution];
-        disp("Pixel size has been read from image metadata.");
-        disp("WARNING: Assumed size unit is um! In case of different unit used in metadata, please overwrite manually.");
+        px_size_temp = double([1/info(1).YResolution, 1/info(1).XResolution]);
+        if isnumeric(px_size_temp)
+            px_size = px_size_temp;
+            disp("Pixel size has been read from image metadata.");
+            disp("WARNING: Assumed size unit is um! In case of different unit used in metadata, please overwrite manually.");
+        else
+            disp("ERROR: Non-numeric value was read. Please overwrite manually. Pixel size not saved.");
+        end
     elseif (~isempty(info(1).YResolution) && isnumeric(1/info(1).YResolution) && (1/info(1).YResolution >= 1) ...
             && ~px_size_flag)
-        xt = input("WARNING: Unexpected pixel size. Check file for metadata corruption. Add size of pixel in um: ");
-        px_size = [xt, xt];
-        disp("Assumption about square pixel shape accepted.");
+        yt = input("WARNING: Unexpected pixel size. Check file for metadata corruption. Add Y-axis size of pixel in um: ");
+        xt = input("WARNING: Add X-axis size of pixel in um: ");
+        px_size_temp = [yt, xt];
+        if isnumeric(px_size_temp)
+            px_size = px_size_temp;
+            disp("Pixel size data saved correctly.");
+            disp("WARNING: Assumed size unit is um! In case of different unit used in metadata, please overwrite manually.");
+        else
+            disp("ERROR: Non-numeric value provided. Please try again. Pixel size not saved.");
+        end
     else
-        xt = input("WARNING: No data about pixel size in root files. Add size of pixel in um: ");
-        px_size = [xt, xt];
-        disp("Assumption about square pixel shape accepted.");
+        yt = input("WARNING: No data about pixel size in root files. Add Y-axis size of pixel in um: ");
+        xt = input("WARNING: Add X-axis size of pixel in um: ");
+        px_size_temp = [yt, xt];
+        if isnumeric(px_size_temp)
+            px_size = px_size_temp;
+            disp("Pixel size data saved correctly.");
+            disp("WARNING: Assumed size unit is um! In case of different unit used in metadata, please overwrite manually.");
+        else
+            disp("ERROR: Non-numeric value provided. Please try again. Pixel size not saved.");
+        end
     end
     
     if ~isempty(px_size)
@@ -38,9 +57,10 @@ try
         end
     end
 catch
-        xt = input("WARNING: Pixel size read from root file failed. Add size of pixel in um: ");
-        px_size = [xt, xt];
-        disp("Assumption about square pixel shape accepted.");
+        yt = input("WARNING: Pixel size read from root file failed. Add Y-axis size of pixel in um: ");
+        xt = input("WARNING: Add X-axis size of pixel in um: ");
+        px_size = [yt, xt];
+        disp("Pixel size data saved correctly.");
         
         if ~isempty(px_size)
             ring_diameter = round(1 / px_size(1));

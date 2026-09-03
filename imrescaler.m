@@ -12,16 +12,16 @@ function [binaryImage, binaryImage2, temp_binaryImage, add_map, temp_add_map, B6
 
         if FA
             im_size = size(dataC);
-            if any(im_size < 2048) && any(im_size > 512)
+            if any(im_size < 2048) && any(im_size >= 512)
                 resc_FA = 1;
-            elseif any(im_size > 512)
+            elseif any(im_size < 512)
                 disp("ERROR (FA add-on): Resolution of input file too low (lower dimension must be at least 512 px). Please change data for the higher resolution image");
             end
         end
             
         if colocalization
             im_size_coloc = size(data12CH);
-            if any(im_size_coloc(1:2) < 2048) && any(im_size_coloc(1:2) > 512)
+            if any(im_size_coloc(1:2) < 2048) && any(im_size_coloc(1:2) >= 512)
                 resc_coloc = 1;
             elseif any(im_size_coloc(1:2) < 512)
                 disp("ERROR (Colocalization add-on): Resolution of input file too low (lower dimension must be at least 512 px). Please change data for the higher resolution image");
