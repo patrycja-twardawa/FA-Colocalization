@@ -1,12 +1,15 @@
-function [binaryImage, total_area] = selectROI(data1, str, data12CH, ch_coloc, ROI_main_ch, ...
+function [binaryImage, total_area] = selectROI(data1, str, data12CH, ch_coloc, ROI_main_ch_ent, ...
     lh_lim_user, lh_lim_coloc_user, contrast_visual_flag, FA, colocalization, total_area, px_size)
 
 try
-    if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
+    if (colocalization && any(ch_coloc == ROI_main_ch_ent)) || (~colocalization && FA)
         disp("Manual ROI extraction started...")
         
         rgb_nam_tab = ["R", "G", "B"];
         d1_flag = 0;
+        
+        [idx1, ROI_main_ch] = find(ch_coloc == ROI_main_ch_ent);
+        
         if FA
             data1ext = data1;
             disp("Image used for FOCAL ADHESIONS add-on will be used for manual ROI extraction.");

@@ -1,12 +1,15 @@
-function [roi_matrix, total_area] = talROICorr(data1, data12CH, ROI_main_ch, ch_coloc, itsty_lvl, ...
+function [roi_matrix, total_area] = talROICorr(data1, data12CH, ROI_main_ch_ent, ch_coloc, itsty_lvl, ...
     roi_matrix, FA, colocalisation, total_area, px_size)
 
 try
-if any(ch_coloc == ROI_main_ch) 
+if any(ch_coloc == ROI_main_ch_ent) 
     disp("ROI extraction started...")
     
     rgb_nam_tab = ["R", "G", "B"];
     d1_flag = 0;
+    
+    [idx1, ROI_main_ch] = find(ch_coloc == ROI_main_ch_ent);
+    
     if FA
         data1ext = data1;
         disp("Image used for FA add-on will be used for automated ROI extraction.");

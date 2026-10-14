@@ -1,14 +1,17 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, total_area, varargout] = ...
-    modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, ...
+    modifyROI(data1, dataC, data12CH, ROI_main_ch_ent, ch_coloc, Iout_ncirc, mod_flag, add_map, ...
     temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, ...
     lh_lim_coloc, total_area, px_size, varargin)
 
 try
-    if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
+    if (colocalization && any(ch_coloc == ROI_main_ch_ent)) || (~colocalization && FA)
         disp("Manual ROI modification started...")
 
         rgb_nam_tab = ["R", "G", "B"];
         d1_flag = 0;
+        
+        [idx1, ROI_main_ch] = find(ch_coloc == ROI_main_ch_ent);
+        
         if FA
             data1ext = data1;
             disp("Image used for FOCAL ADHESIONS add-on will be used for ROI modification.");
