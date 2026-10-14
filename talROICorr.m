@@ -88,7 +88,11 @@ if any(ch_coloc == ROI_main_ch_ent)
         end
         
         total_area(1) = numel(find(roi_matrix));
-        total_area(3) = px_size(1) * px_size(2) * double(numel(find(roi_matrix)));
+        if ~isempty(px_size)
+            total_area(3) = px_size(1) * px_size(2) * double(numel(find(roi_matrix)));
+        else
+            disp("WARNING: Pixel size has not been read. The conversion to real units cannot be displayed (value 0 remains).");
+        end
         disp(strcat( "Total cell ROI area: ", num2str(total_area(1)), " px; ", ...
             num2str(total_area(3)) , " um^2"));
 
