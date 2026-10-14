@@ -66,9 +66,9 @@ function [binaryImage, binaryImage2, temp_binaryImage, add_map, temp_add_map, B6
             data_subtracted = zeros(im_size_coloc(1:2), 'double'); %subtraction colocalisation map
             data_subtracted_nucl = zeros(im_size_coloc(1:2), 'double'); %subtraction colocalisation map of cell nucleus
 
-            if any(im_size > 2048) && resc_FA
+            if any(im_size > 2048) && resc_coloc
                 disp("NOTICE (Colocalization add-on: Please note that resolution of the input reference image is higher than recommended 2048x2048. Adjustment of parameters may be necessary. Images rescaled, memory allocation changed.");
-            elseif resc_FA
+            elseif resc_coloc
                 disp("WARNING (Colocalization add-on): Resolution of the input reference image is lower than recommended 2048x2048 px, but within acceptable limit. Images rescaled, memory allocation changed.");
             end
             
