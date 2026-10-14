@@ -42,7 +42,7 @@ try
                 data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
                 disp("Image with contrast settings chosen automatically will be used for display.");
             end
-            disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for ROI modification."));
+            disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch_ent), ") will be used for ROI modification."));
             d1_flag = 1;
         end
 

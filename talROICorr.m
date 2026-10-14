@@ -16,7 +16,7 @@ if any(ch_coloc == ROI_main_ch_ent)
         d1_flag = 1;
     elseif colocalisation
         data1ext = data12CH(:,:,ROI_main_ch);
-        disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for automated ROI extraction."));
+        disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch_ent), ") will be used for automated ROI extraction."));
         d1_flag = 1;
     else
         disp("(E5) ERROR: No add-on selected. Choose either FOCAL ADHESIONS, COLOCALIZATION, or both. Check USER INPUT variables.");

@@ -20,7 +20,7 @@ try
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
-            disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for manual ROI extraction."));
+            disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch_ent), ") will be used for manual ROI extraction."));
             if ~contrast_visual_flag
                 if (ROI_main_ch == 1)
                     lh_temp = lh_lim_coloc_user(1:2);
