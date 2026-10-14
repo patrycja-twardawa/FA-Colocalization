@@ -140,6 +140,11 @@ catch
     if break_flag && ~isempty(find(temp_Iout_ncirc - Iout_ncirc))  
         if isempty(varargin)
             total_area(1) = numel(find(Iout_ncirc));
+            if ~isempty(px_size)
+                total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+            else
+                disp("WARNING: Pixel size has not been read. The conversion to real units cannot be displayed (value 0 remains).");
+            end
             total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
             disp(strcat( "Total cell ROI area recalculated: ", num2str(total_area(1)), " px; ", ...
                 num2str(total_area(3)) , " um^2"));
