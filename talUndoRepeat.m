@@ -39,7 +39,11 @@ try
             add_map = temp_add_map_old;
             
             total_area(1) = numel(find(Iout_ncirc));
-            total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+            if ~isempty(px_size)
+                total_area(3) = px_size(1) * px_size(2) * double(numel(find(Iout_ncirc)));
+            else
+                disp("WARNING: Pixel size has not been read. The conversion to real units cannot be displayed (value 0 remains).");
+            end
             disp(strcat( "Total cell ROI area recalculated to previous value: ", num2str(total_area(1)), ...
                 " px; ", num2str(total_area(3)) , " um^2"));
 
