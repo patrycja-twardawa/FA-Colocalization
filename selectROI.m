@@ -57,8 +57,12 @@ try
                 area_idx = [2,4];
                 roi_text = "cell nucleus";
             end
-            total_area(area_idx(1)) = numel(find(binaryImage));
-            total_area(area_idx(2)) = px_size(1) * px_size(2) * double(numel(find(binaryImage)));
+            total_area(area_idx(1)) = numel(find(binaryImage));           
+            if ~isempty(px_size)
+                total_area(area_idx(2)) = px_size(1) * px_size(2) * double(numel(find(binaryImage)));
+            else
+                disp("WARNING: Pixel size has not been read. The conversion to real units cannot be displayed (value 0 remains).");
+            end           
             disp(strcat( "Total ", roi_text, " ROI area: ", num2str( total_area(area_idx(1)) ), " px; ", ...
                 num2str( total_area(area_idx(2)) ) , " um^2"));
             
