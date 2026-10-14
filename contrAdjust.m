@@ -8,7 +8,7 @@ try
             data12CH(:,:,1) = imadjust(data12CH_ctr(:,:,1));
             data12CH(:,:,2) = imadjust(data12CH_ctr(:,:,2));
             disp("Automatic contrast limits applied for analysis in COLOCALIZATION add-on.");
-        elseif contrast_flag                         
+        elseif contrast_flag == 1                        
             T = graythresh(data12CH_ctr(:,:,1));   
             lh_lim_coloc_temp = [T*0.2, T];             
             data12CH(:,:,1) = imadjust(data12CH_ctr(:,:,1), lh_lim_coloc_temp);                          
