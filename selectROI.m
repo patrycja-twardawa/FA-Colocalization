@@ -44,7 +44,7 @@ try
             binaryImage = hFH.createMask();
             xy = hFH.getPosition;
 
-            prpt2 = strcat("ROI ",  str, " chosen properly.");
+            prpt2 = strcat("ROI for ",  str, " chosen properly.");
             disp(prpt2{:});
             
             if strcmp(str, "CELL")

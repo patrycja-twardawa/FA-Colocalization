@@ -82,7 +82,7 @@ obj_area_thresh_circ_itsty = 130; %minimal number of px assigned to larger circu
 obj_area_thresh = 150; %minimal number of px assigned to objects (object selection, regardless of other factor)
 circ_param = 0.7; %circularity threshold (lower value - more of circular objects accepted in fiber "ncirc" map; 0.7 is the default value to cut single pixels but not 2-px and larger fibers)
 itsty_lvl = 0.8; %intensity threshold (elimination of objects based on the intensity criterium, cutoff below values < itsty_lvl * 100% max intensity)
-itsty_lvl_ROI = 0.4; %minimal intensity level threshold for pixel acceptance to count as neighborhood in CELL ROI
+itsty_lvl_ROI = 0.7; %minimal intensity level threshold for pixel acceptance to count as neighborhood in CELL ROI
 ratio_lvl = 2.0; %object dimensional ratio threshold (elimination based on the ratio of dimensions, cutoff for largest "diameter" divided by smallest "diameter < ratio_lvl
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -182,7 +182,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 
 [binaryImage, temp_binaryImage, l, add_map, temp_add_map, total_area] = modifyROI(data1, dataC, ...
     data12CH, ROI_main_ch, ch_coloc, binaryImage, 1, add_map, temp_add_map, FA, colocalization, ...
-    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, total_area, px_size); %do not modify this statement, or the statements above / below
+    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, lh_lim_coloc, total_area, px_size); %do not modify this statement, or the statements above / below
 
 %% ADD OBJECTS TO CELL ROI
 % Use this section to add chosen areas to CELL ROI.
@@ -190,7 +190,7 @@ disp("USER INPUT variables initialized."); %do not modify this statement
 
 [binaryImage, temp_binaryImage, l, add_map, temp_add_map, total_area] = modifyROI(data1, dataC, ...
     data12CH, ROI_main_ch, ch_coloc, binaryImage, 0, add_map, temp_add_map, FA, colocalization, ...
-    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, total_area, px_size); %do not modify this statement, or the statements above / below
+    contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, lh_lim_coloc, total_area, px_size); %do not modify this statement, or the statements above / below
 
 %% UNDO / REDO CELL ROI MANUAL CHANGES
 % When you run this section and last operation was UNDO, the next will be REDO.
@@ -234,7 +234,7 @@ end
 % NOTICE: Feature available only for FOCAL ADHESIONS add-on.
 
 if FA
-    [int_rings_tab, ir_rings] = talCountIntRings(binaryImage, dataC, int_rings_tab, ring_diameter, 1, []); %do not modify this statement, or the statements above / below
+    [int_rings_tab, ir_rings] = talCountIntRings(binaryImage, dataC, int_rings_tab, ring_diameter, 1, ir_rings, []); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | USER CHOICE: DISPLAY CHOSEN RING AREA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -284,7 +284,7 @@ if FA
     [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, Iout_circ, temp_Iout_circ, total_area, ...
         add_overlay] = modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 1, add_map, ...
         temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, ...
-        total_area, px_size, Iout_circ); %do not modify this statement, or the statements above / below
+        lh_lim_coloc, total_area, px_size, Iout_circ); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | ADD OBJECTS TO SEGMENTATION ROI
@@ -295,7 +295,7 @@ if FA
     [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, Iout_circ, temp_Iout_circ, total_area, ...
         add_overlay] = modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, 0, add_map, ...
         temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_tal_user, lh_lim_coloc_user, ...
-        total_area, px_size, Iout_circ); %do not modify this statement, or the statements above / below
+        lh_lim_coloc, total_area, px_size, Iout_circ); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | UNDO / REDO FOR SEGMENTATION ROI
@@ -364,7 +364,7 @@ end
 
 if FA
     [int_rings_tab] = talCountIntRings(binaryImage, dataC, int_rings_tab, ...
-        ring_diameter, 0, labeled_im, Iout_ncirc); %do not modify this statement, or the statements above / below
+        ring_diameter, 0, ir_rings, labeled_im, Iout_ncirc); %do not modify this statement, or the statements above / below
 end
 
 %% FOCAL ADHESIONS ADD-ON | CHANGE PX DISTANCES TO REAL SIZE UNITS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -394,13 +394,8 @@ end
 % NOTICE: You can run section multiple times / after label or ROI corrections. Data will be overwritten.
 % NOTICE: Feature available only for FOCAL ADHESIONS add-on.
 
-%HERE only fa addon?
 if FA
-    writetable(temp, strcat(filepath, save_default_name, ".xlsx"), 'Sheet', 'Object data');
-    writetable(int_rings_tab, strcat(filepath, save_default_name, ".xlsx"), 'Sheet', 'Ring data');
-    save(strcat(filepath, 'BinaryMaps-', save_default_name)); %do not modify this statement, or the statements above / below
-
-    disp(strcat("Result file has been written to MS Excel file. Filename: ", filepath, save_default_name, ".xlsx")); %do not modify this statement, or the statements above / below
+    saveData(temp, filepath, save_default_name, int_rings_tab) %do not modify this statement, or the statements above / below
 end
 
 %% END OF SCRIPT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

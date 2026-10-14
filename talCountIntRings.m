@@ -1,5 +1,5 @@
 function [int_rings_tab, varargout] = talCountIntRings(binaryImage, data0, int_rings_tab, ...
-    ring_diameter, ring_flag_mod, varargin)
+    ring_diameter, ring_flag_mod, ir_rings, varargin)
 
 try
     if ~isempty(ring_diameter)
@@ -42,7 +42,11 @@ try
 
                 int_rings_tab = struct2table(int_rings, "AsArray", false); 
                 varargout{1} = ir_maps;
-                disp("Intensities have been assessed successfully for the 'ring areas'.");
+                if isempty(ir_rings)
+                    disp("Intensities have been assessed successfully for the 'ring areas'.");
+                else
+                    disp("Intensities have been re-assessed successfully for the 'ring areas' ('ir_rings' was overwritten).");
+                end
             else %correct for label number in rings after labelling 
                 try
                     io_overlap = [];
@@ -70,19 +74,31 @@ try
 
                     int_rings_tab.ObjectsOverlapping = io_overlap;
                     disp("Data for number of objects in rings of given diameter added successfully to the table.");
-
+                    
                 catch
                     disp("(E15) FOCAL ADHESIONS ADD-ON | ERROR: Objects in chosen rings of given diameter cannot be counted. Check data and try again.");
+                    if ring_flag_mod
+                        varargout{1} = [];
+                    end
                 end                     
             end %if mod       
         else
             disp("(E16) FOCAL ADHESIONS ADD-ON | ERROR: There is no object to erode from. Check data and assign ROI again.");
+            if ring_flag_mod
+                varargout{1} = [];
+            end
         end
     else
-        disp("(E17) FOCAL ADHESIONS ADD-ON | ERROR: Ring diameter not provided. Please check your data and try again.");
+        disp("(E17) FOCAL ADHESIONS ADD-ON | ERROR: Ring diameter not provided or intensity in rings not counted. Please check your inputs and try again.");
+        if ring_flag_mod
+            varargout{1} = [];
+        end       
     end
 catch
     disp("(E18) FOCAL ADHESIONS ADD-ON | ERROR: Failure during processing of ring areas. Check data and assign ROI again.");
+    if ring_flag_mod
+        varargout{1} = [];
+    end
 end
 
 end
