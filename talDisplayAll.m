@@ -78,25 +78,29 @@ try
     saveas(fig9, strcat(filepath, save_default_name, '-LabelsColoredCytoplasm.tif'));
     savefig(fig9, strcat(filepath, save_default_name, '-LabelsColoredCytoplasm.fig'));
     
-    fig10 = figure(10); stem(int_rings_tab.BorderDistance, int_rings_tab.MeanIntenNorm, 'r');
-    xlabel("Distance from cell border [um]", 'FontSize', 10); % strcat("Distance from cell border [um]"), (band radius: ", num2str(ring_diameter * px_size(1)), " px)"), 'FontSize', 10);
-    xlim([0, max(int_rings_tab.BorderDistance) + 0.1 * max(int_rings_tab.BorderDistance)]);
-    ylabel('Normalized mean intensity [0-1]', 'FontSize', 10);
-    ylim([0, 1.2]);
-    title('Distance from cell edge and intensity dependency');
-    grid on;
-    saveas(fig10, strcat(filepath, save_default_name, '-RingsChart.tif'));
-    savefig(fig10, strcat(filepath, save_default_name, '-RingsChart.fig'));
-        
-    fig11 = figure(11); stem(int_rings_tab.BorderDistance, int_rings_tab.ObjectsOverlapping, 'b');
-    xlabel("Distance from cell border [um]", 'FontSize', 10); % strcat("Distance from cell border [um]"), (band radius: ", num2str(ring_diameter * px_size(1)), " px)"), 'FontSize', 10);
-    xlim([0, max(int_rings_tab.BorderDistance) + 0.1 * max(int_rings_tab.BorderDistance)]);
-    ylabel('Number of overlapping objects', 'FontSize', 10);
-    ylim([0, max(int_rings_tab.ObjectsOverlapping) + 5]);
-    title('Relation between number of objects and distance from cell edge');
-    grid on;
-    saveas(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.tif'));
-    savefig(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.fig'));
+    if any(size(int_rings_tab)) > 1
+        fig10 = figure(10); stem(int_rings_tab.BorderDistance, int_rings_tab.MeanIntenNorm, 'r');
+        xlabel("Distance from cell border [um]", 'FontSize', 10); % strcat("Distance from cell border [um]"), (band radius: ", num2str(ring_diameter * px_size(1)), " px)"), 'FontSize', 10);
+        xlim([0, max(int_rings_tab.BorderDistance) + 0.1 * max(int_rings_tab.BorderDistance)]);
+        ylabel('Normalized mean intensity [0-1]', 'FontSize', 10);
+        ylim([0, 1.2]);
+        title('Distance from cell edge and intensity dependency');
+        grid on;
+        saveas(fig10, strcat(filepath, save_default_name, '-RingsChart.tif'));
+        savefig(fig10, strcat(filepath, save_default_name, '-RingsChart.fig'));
+
+        fig11 = figure(11); stem(int_rings_tab.BorderDistance, int_rings_tab.ObjectsOverlapping, 'b');
+        xlabel("Distance from cell border [um]", 'FontSize', 10); % strcat("Distance from cell border [um]"), (band radius: ", num2str(ring_diameter * px_size(1)), " px)"), 'FontSize', 10);
+        xlim([0, max(int_rings_tab.BorderDistance) + 0.1 * max(int_rings_tab.BorderDistance)]);
+        ylabel('Number of overlapping objects', 'FontSize', 10);
+        ylim([0, max(int_rings_tab.ObjectsOverlapping) + 5]);
+        title('Relation between number of objects and distance from cell edge');
+        grid on;
+        saveas(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.tif'));
+        savefig(fig11, strcat(filepath, save_default_name, '-RingsChartObjects.fig'));
+    else
+        disp("WARNING: Charts regarding the ring areas have not been displayed, for no areas have been estimated in previous steps.");
+    end
     
     disp(strcat("Total cell ROI area: ", num2str(total_area(3)), " um^2"));
     disp(strcat("Total cell nucleus ROI area: ", num2str(total_area(4)), " um^2"));

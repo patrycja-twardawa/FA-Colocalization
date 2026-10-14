@@ -69,7 +69,10 @@ if any(ch_coloc == ROI_main_ch)
                 plotetqts(c_centr, size(area_measurement, 1), 1);
                 title("Choose cell area to be accepted as automatically selected CELL ROI."); 
                 cell_loc = uint8(input("Select area number: "));
-                if ( (cell_loc >= 1) && (cell_loc <= size(area_measurement, 1)) )
+                if ( (cell_loc >= 1) && (cell_loc <= size(area_measurement, 1)) ) %tu if isnumber cell_loc!!!!
+                    
+                   % tututututu
+                    
                     disp(strcat("You chose area No. ", num2str(cell_loc), " as CELL ROI."));
                 else
                     cell_loc = find([area_measurement.Area] == max([area_measurement.Area]));

@@ -11,9 +11,9 @@ B6col_nucl = zeros([2048,2048], 'logical'); %stage 3 binary map after applying u
 read_flag2CH = [0, 0]; %0 - 1st/2nd channel image is empty, 1 - 1st/2nd channel image has been read
 
 % IMAGES
-dataC2CH = zeros([2048,2048,2], 'double'); %original image data for the 1st and 2nd chosen image channels
-data12CH_ctr = zeros([2048,2048,2], 'double'); %image data before contrast adjustment for the 1st and 2nd chosen image channels
-data12CH = zeros([2048,2048,2], 'double'); %image data after processing for the 1st and 2nd chosen image channels
+dataC2CH = []; %zeros([2048,2048,2], 'double'); %original image data for the 1st and 2nd chosen image channels
+data12CH_ctr = []; %zeros([2048,2048,2], 'double'); %image data before contrast adjustment for the 1st and 2nd chosen image channels
+data12CH = []; %zeros([2048,2048,2], 'double'); %image data after processing for the 1st and 2nd chosen image channels
 data12CH_nucl = zeros([2048,2048], 'double'); %image of CELL NUCLEUS ROI after processing for the 1st and 2nd chosen image channels
 G_col = zeros([2048,2048,2], 'double'); %image after filtering
 

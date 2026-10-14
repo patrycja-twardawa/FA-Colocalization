@@ -1,7 +1,7 @@
 function [Iout_ncirc, temp_Iout_ncirc, l, add_map, temp_add_map, total_area, varargout] = ...
     modifyROI(data1, dataC, data12CH, ROI_main_ch, ch_coloc, Iout_ncirc, mod_flag, add_map, ...
     temp_add_map, FA, colocalization, contrast_visual_flag, lh_lim_user, lh_lim_coloc_user, ...
-    total_area, px_size, varargin)
+    lh_lim_coloc, total_area, px_size, varargin)
 
 try
     if (colocalization && any(ch_coloc == ROI_main_ch)) || (~colocalization && FA)
@@ -13,9 +13,12 @@ try
             data1ext = data1;
             disp("Image used for FOCAL ADHESIONS add-on will be used for ROI modification.");
             if ~contrast_visual_flag
-                data1disp = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);
+                data1disp = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);            
                 disp("Image with user contrast settings will be used for display.");
-            end
+            else
+                data1disp = data1;
+                disp("Image with contrast settings chosen automatically will be used for display.");
+            end                              
             d1_flag = 1;
         elseif colocalization
             data1ext = data12CH(:,:,ROI_main_ch);
@@ -27,6 +30,14 @@ try
                 end
                 data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
                 disp("Image with user contrast settings will be used for display.");
+            else
+                if (ROI_main_ch == 1)
+                    lh_temp = lh_lim_coloc(1:2);
+                else
+                    lh_temp = lh_lim_coloc(3:4);
+                end
+                data1disp = imadjust(data12CH(:,:,ROI_main_ch), lh_temp);
+                disp("Image with contrast settings chosen automatically will be used for display.");
             end
             disp(strcat("Image used for COLOCALIZATION add-on (main channel: ", rgb_nam_tab(ROI_main_ch), ") will be used for ROI modification."));
             d1_flag = 1;
@@ -70,6 +81,17 @@ try
                 disp(s_add1);
             end
 
+%             if ~contrast_visual_flag
+%                 tt = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);   
+%                 tt(ir_rings(:,:,ring_number) == 1) = 1;
+%                 dataC_adj = imadjust(rescale(double(dataC), 0, 1), lh_lim_user);
+%                 data_overlay_ir = cat(3, im2uint16(tt), im2uint16(dataC_adj), im2uint16(dataC_adj));
+%             else
+%                 tt = data1;   
+%                 tt(ir_rings(:,:,ring_number) == 1) = 1;
+%                 data_overlay_ir = cat(3, im2uint16(tt), im2uint16(data1), im2uint16(data1));
+%             end            
+            
             while loop_count
                 add_overlay = cat(3, im2uint16(Iout_ncirc), im2uint16(data1ext), im2uint16(Iout_ncirc));
                 if ~contrast_visual_flag

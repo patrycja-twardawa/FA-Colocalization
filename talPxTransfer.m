@@ -12,8 +12,10 @@ try
         temp.WeightedCentroid(:,1) = temp.WeightedCentroid(:,1) * px_size(1);
         temp.WeightedCentroid(:,2) = temp.WeightedCentroid(:,2) * px_size(2);
 
-        int_rings_tab.Area = (px_size(1) * px_size(2)) * int_rings_tab.Area;
-        int_rings_tab.BorderDistance = px_size(1) * int_rings_tab.BorderDistance;
+        if any(size(int_rings_tab)) > 1
+            int_rings_tab.Area = (px_size(1) * px_size(2)) * int_rings_tab.Area;
+            int_rings_tab.BorderDistance = px_size(1) * int_rings_tab.BorderDistance;
+        end
 
         total_area(3) = px_size(1) * px_size(2) * total_area(1);
         total_area(4) = px_size(1) * px_size(2) * total_area(2);

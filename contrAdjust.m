@@ -50,7 +50,6 @@ try
             
             if ~contrast_visual_flag
                 disp_im_fa = imadjust(rescale(double(data1), 0, 1), lh_lim_tal_user);
-
                 figure; imshow(disp_im_fa);
                 title("Focal Adhesions single channel, user display settings");
                 disp("Contrast settings chosen by user will be used for display (Focal Adhesions add-on), regardless of processing settings.");
